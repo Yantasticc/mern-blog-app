@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Navbar from "../../components/Navbar";
 import Sidebar from "../../components/Sidebar";
-import backgroundImg from '../../assets/bg.png';
+import backgroundImg from '../../assets/bg.jpg';
 import AllBlogs from '../../components/AllBlogs';
 import CreateBlog from '../../components/CreateBlog';
 import UserBlogs from '../../components/UserBlogs';
