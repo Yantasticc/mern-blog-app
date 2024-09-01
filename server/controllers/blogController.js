@@ -1,26 +1,24 @@
-import BlogPost from '../models/blogPostModel.js';
+import UsersDB from '../models/userModel.js';
 
 // CREATE NEW BLOG
 async function createBlog(req, res) {
     try {
-        const { title, content, author, category, tags, featuredImage, readingTime } = req.body;
+        const { title, content, category, tags, featuredImage, readingTime, userId } = req.body;
 
-        if (!title || !content || !author || !category || !tags) {
+        if (!title || !content || !category || !tags || !userId) {
             return res.status(400).send({ message: "Enter all the required fields" });
         }
 
-        const newBlog = new BlogPost({
-            title,
-            content,
-            author,
-            category,
-            tags,
-            featuredImage,
-            readingTime
-        });
+        const user = await UsersDB.findById(userId);
+        if (!user) {
+            return res.status(404).send({ message: "User not found" });
+        }
 
-        const savedBlog = await newBlog.save();
-        res.status(201).send({ message: "Blog created successfully", blog: savedBlog });
+        const newBlog = { title, content, category, tags, featuredImage, readingTime };
+        user.blogs.push(newBlog);
+        await user.save();
+
+        res.status(201).send({ message: "Blog created successfully", blogs: user.blogs });
     } catch (error) {
         res.status(500).send({ message: error.message });
     }
@@ -29,50 +27,78 @@ async function createBlog(req, res) {
 // GET ALL BLOGS
 async function getAllBlogs(req, res) {
     try {
-        const blogs = await BlogPost.find();
+        const users = await UsersDB.find().select('blogs');
+        const blogs = users.flatMap(user => user.blogs);
         res.status(200).send(blogs);
     } catch (error) {
         res.status(500).send({ message: error.message });
     }
 }
 
-// GET BLOG BY ID
-async function getBlogById(req, res) {
+// GET BLOGS BY USER ID
+async function getUserBlogs(req, res) {
     try {
-        const blog = await BlogPost.findById(req.params.id);
-        if (!blog) {
-            return res.status(404).send({ message: "Blog not found" });
+        const user = await UsersDB.findById(req.params.userId);
+        if (!user) {
+            return res.status(404).send({ message: "User not found" });
         }
-        res.status(200).send(blog);
+        res.status(200).send(user.blogs);
     } catch (error) {
         res.status(500).send({ message: error.message });
     }
 }
 
-// UPDATE BLOG BY ID
-async function updateBlogById(req, res) {
+// UPDATE BLOG BY USER ID AND BLOG ID
+async function updateBlog(req, res) {
     try {
-        const blog = await BlogPost.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        const { userId, blogId } = req.params;
+        const { title, content, category, tags, featuredImage, readingTime } = req.body;
+
+        const user = await UsersDB.findById(userId);
+        if (!user) {
+            return res.status(404).send({ message: "User not found" });
+        }
+
+        const blog = user.blogs.id(blogId);
         if (!blog) {
             return res.status(404).send({ message: "Blog not found" });
         }
+
+        blog.title = title || blog.title;
+        blog.content = content || blog.content;
+        blog.category = category || blog.category;
+        blog.tags = tags || blog.tags;
+        blog.featuredImage = featuredImage || blog.featuredImage;
+        blog.readingTime = readingTime || blog.readingTime;
+
+        await user.save();
         res.status(200).send({ message: "Blog updated successfully", blog });
     } catch (error) {
         res.status(500).send({ message: error.message });
     }
 }
 
-// DELETE BLOG BY ID
-async function deleteBlogById(req, res) {
+// DELETE BLOG BY USER ID AND BLOG ID
+async function deleteBlog(req, res) {
     try {
-        const blog = await BlogPost.findByIdAndDelete(req.params.id);
+        const { userId, blogId } = req.params;
+
+        const user = await UsersDB.findById(userId);
+        if (!user) {
+            return res.status(404).send({ message: "User not found" });
+        }
+
+        const blog = user.blogs.id(blogId);
         if (!blog) {
             return res.status(404).send({ message: "Blog not found" });
         }
+
+        blog.remove();
+        await user.save();
         res.status(200).send({ message: "Blog deleted successfully" });
     } catch (error) {
         res.status(500).send({ message: error.message });
     }
 }
 
-export { createBlog, getAllBlogs, getBlogById, updateBlogById, deleteBlogById };
+export { createBlog, getAllBlogs, getUserBlogs, updateBlog, deleteBlog };
