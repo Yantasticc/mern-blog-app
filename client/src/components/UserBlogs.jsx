@@ -14,7 +14,6 @@ const UserBlogs = () => {
           throw new Error("User is not logged in");
         }
 
-        // Get userId from username
         const userResponse = await axios.get(`http://localhost:8000/authentication/getUserId?username=${username}`);
         const userId = userResponse.data.userId;
 
@@ -22,9 +21,8 @@ const UserBlogs = () => {
           throw new Error("User ID not found");
         }
 
-        // Fetch blogs for the user
         const response = await axios.get(`http://localhost:8000/blog/${userId}`);
-        setBlogs(response.data); // Directly use the response data as an array
+        setBlogs(response.data); 
       } catch (err) {
         setError('Failed to fetch user blogs');
         console.error(err);

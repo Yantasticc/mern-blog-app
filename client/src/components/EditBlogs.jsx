@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import EditBlogForm from './EditBlogForm'; // Ensure you have the correct path for this import
+import EditBlogForm from './EditBlogForm'; 
 
 const EditBlogs = () => {
   const [blogs, setBlogs] = useState([]);
@@ -27,7 +27,7 @@ const EditBlogs = () => {
       try {
         if (userId) {
           const response = await axios.get(`http://localhost:8000/blog/${userId}`);
-          setBlogs(response.data || []); // Directly use the response data as an array
+          setBlogs(response.data || []);
         }
       } catch (err) {
         setError('Failed to fetch blogs');

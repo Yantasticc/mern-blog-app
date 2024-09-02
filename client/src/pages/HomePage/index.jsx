@@ -37,7 +37,7 @@ const HomePage = () => {
         <Navbar />
       </div>
 
-      <div className="flex flex-grow pt-16"> {/* Added pt-16 to account for fixed Navbar height */}
+      <div className="flex flex-grow pt-16">
         <div className="w-64 fixed top-16 bottom-0 z-10 backdrop-blur-md bg-opacity-30 bg-black">
           <Sidebar onSelect={setSelectedOption} />
         </div>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
 
 const EditBlogForm = ({ blog }) => {
   const [formData, setFormData] = useState({
@@ -13,7 +13,7 @@ const EditBlogForm = ({ blog }) => {
   });
   const [userId, setUserId] = useState('');
   const [error, setError] = useState('');
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserId = async () => {
@@ -47,7 +47,7 @@ const EditBlogForm = ({ blog }) => {
       try {
         await axios.put(`http://localhost:8000/blog/${userId}/${blog._id}`, formData);
         alert('Blog updated successfully!');
-        navigate('/home'); // Navigate to the home page
+        navigate('/home');
       } catch (err) {
         console.error("Failed to update blog", err);
         setError('Failed to update blog');

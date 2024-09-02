@@ -9,7 +9,6 @@ async function createUser(req, res) {
             return res.status(400).send({ message: "Enter all the required fields" });
         }
 
-        // Check if user already exists
         const existingUser = await UsersDB.findOne({ email });
         if (existingUser) {
             return res.status(400).send({ message: "User already exists" });
@@ -48,7 +47,7 @@ async function loginUser(req, res) {
 // GET USER ID
 async function getUserId(req, res) {
     try {
-        const { username } = req.query; // Assuming you pass the username as a query parameter
+        const { username } = req.query; 
         if (!username) {
             return res.status(400).send({ message: "Username is required" });
         }

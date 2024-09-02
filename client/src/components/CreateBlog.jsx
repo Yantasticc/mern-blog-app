@@ -50,7 +50,7 @@ const CreateBlog = () => {
           tags: '',
           featuredImage: '',
           readingTime: '',
-          userId: formData.userId, // Retain userId
+          userId: formData.userId,
         });
       }
     } catch (err) {

@@ -23,7 +23,7 @@ export default function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post('http://localhost:8000/authentication/login', {
+            const res = await axios.post('https://mern-blog-app-zeta-eight.vercel.app/authentication/login', {
                 username: data.username,
                 password: data.password, 
             })

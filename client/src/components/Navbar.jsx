@@ -4,7 +4,6 @@ import quotes from '../constants/quotes';
 const Navbar = () => {
   const username = localStorage.getItem('username') || 'Guest';
   
-  // Function to get a random quote
   const getRandomQuote = () => {
     const randomIndex = Math.floor(Math.random() * quotes.length);
     return quotes[randomIndex];

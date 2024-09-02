@@ -10,7 +10,7 @@ const AllBlogs = () => {
     const fetchBlogs = async () => {
       try {
         const response = await axios.get('http://localhost:8000/blog/');
-        setBlogs(response.data); // Directly use the response data as an array
+        setBlogs(response.data); 
       } catch (err) {
         setError('Failed to fetch blogs');
         console.error(err);
@@ -31,8 +31,8 @@ const AllBlogs = () => {
               key={blog._id}
               title={blog.title}
               content={blog.content}
-              category={blog.category.join(', ')} // Convert array to string
-              tags={blog.tags.join(', ')} // Convert array to string
+              category={blog.category.join(', ')} 
+              tags={blog.tags.join(', ')} 
               featuredImage={blog.featuredImage}
               readingTime={blog.readingTime}
             />

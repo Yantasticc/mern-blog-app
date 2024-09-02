@@ -1,6 +1,5 @@
-/* Hide scrollbar but keep scrolling */
 .scrollable-content {
-  overflow: scroll; /* Allow scrolling */
+  overflow: scroll;
 }
 
 /* Hide scrollbar for Webkit browsers */

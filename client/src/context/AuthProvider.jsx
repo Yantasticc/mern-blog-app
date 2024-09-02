@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
 
-// Create the context with a default value of undefined
 const AuthContext = createContext(undefined);
 
 export const AuthProvider = ({ children }) => {

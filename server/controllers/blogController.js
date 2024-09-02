@@ -83,22 +83,18 @@ async function deleteBlog(req, res) {
     try {
         const { userId, blogId } = req.params;
 
-        // Find the user by userId
         const user = await UsersDB.findById(userId);
         if (!user) {
             return res.status(404).send({ message: "User not found" });
         }
 
-        // Check if the blog exists in the user's blogs array
         const blogIndex = user.blogs.findIndex(blog => blog._id.toString() === blogId);
         if (blogIndex === -1) {
             return res.status(404).send({ message: "Blog not found" });
         }
 
-        // Remove the blog from the user's blogs array
         user.blogs.splice(blogIndex, 1);
 
-        // Save the user document
         await user.save();
         
         res.status(200).send({ message: "Blog deleted successfully" });
